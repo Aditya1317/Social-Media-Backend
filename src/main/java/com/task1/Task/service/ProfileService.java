@@ -9,7 +9,7 @@ public interface ProfileService {
 
     Profiledto getProfileById(Long id);
 
-    Profiledto followAnotherId(Long id);
+    Profiledto followAnotherId(Long id,Long userId);
 
     Profiledto unfollowAnotherId(Long id);
 }

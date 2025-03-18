@@ -1,6 +1,7 @@
 package com.task1.Task.controller;
 
 
+import com.task1.Task.dto.AuthResponse;
 import com.task1.Task.dto.Userdto;
 import com.task1.Task.entity.User;
 import com.task1.Task.exception.ApiResponse;
@@ -30,12 +31,19 @@ public class UserController {
         return new ResponseEntity<>(createdUser,HttpStatus.CREATED);
     }
 
-
     @PostMapping("/login")
-    public String login(@RequestBody Userdto userdto){
-        System.out.println(userdto);
-        return userService.verify(userdto);
+    public ResponseEntity<AuthResponse> login(@RequestBody Userdto userdto) {
+        AuthResponse response = userService.verify(userdto);
+        return ResponseEntity.ok(response);
     }
+
+
+
+//    @PostMapping("/login")
+//    public String login(@RequestBody Userdto userdto){
+//        System.out.println(userdto);
+//        return userService.verify(userdto);
+//    }
 
     @GetMapping("/getdetails/{id}")
     public ResponseEntity<ApiResponse> getUserById(@PathVariable("id") Long id) throws ResourceNotFoundException {

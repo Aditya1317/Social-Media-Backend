@@ -38,18 +38,53 @@ public class ProfileServiceImpl implements ProfileService {
 
     }
 
+//    @Override
+//    public Profiledto followAnotherId(Long id) {
+//        Profile profile=profileRepository.findById(id).orElseThrow( ()->new RuntimeException("Not found") );
+//        if (profile.getFollowing() == null) {
+//            profile.setFollowing(0L); // Initialize if null
+//        }
+//
+//
+//        profile.setFollowing(profile.getFollowing()+1);
+//        Profile result=profileRepository.save(profile);
+//        return modelMapper.map(result,Profiledto.class);
+//    }
+
+
+
     @Override
-    public Profiledto followAnotherId(Long id) {
-        Profile profile=profileRepository.findById(id).orElseThrow( ()->new RuntimeException("Not found") );
-        if (profile.getFollowing() == null) {
-            profile.setFollowing(0L); // Initialize if null
+    public Profiledto followAnotherId(Long profileId ,Long loggedInUserId ) {
+        // Retrieve the profile of the logged-in user
+        System.out.println("0");
+        Profile followerProfile = profileRepository.findByUserId(loggedInUserId)
+                .orElseThrow(() -> new RuntimeException("Logged-in User not found"));
+        System.out.println("1");
+
+        // Retrieve the profile of the user being followed
+        Profile followedProfile = profileRepository.findById(profileId)
+                .orElseThrow(() -> new RuntimeException("User to follow not found"));
+
+        // Increase the following count for the logged-in user
+        if (followerProfile.getFollowing() == null) {
+            followerProfile.setFollowing(0L);
         }
+        followerProfile.setFollowing(followerProfile.getFollowing() + 1);
 
+        // Increase the followers count for the person being followed
+        if (followedProfile.getFollowers() == null) {
+            followedProfile.setFollowers(0L);
+        }
+        followedProfile.setFollowers(followedProfile.getFollowers() + 1);
 
-        profile.setFollowing(profile.getFollowing()+1);
-        Profile result=profileRepository.save(profile);
-        return modelMapper.map(result,Profiledto.class);
+        // Save the updates to both profiles
+        profileRepository.save(followerProfile);
+        profileRepository.save(followedProfile);
+
+        // Return the followed user's updated profile as DTO
+        return modelMapper.map(followedProfile, Profiledto.class);
     }
+
 
     @Override
     public Profiledto unfollowAnotherId(Long id) {

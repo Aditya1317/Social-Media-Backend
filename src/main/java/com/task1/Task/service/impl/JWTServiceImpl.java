@@ -34,17 +34,17 @@ public class JWTServiceImpl implements JWTService {
     }
 
     @Override
-    public String generateToken(String username) {
+    public String generateToken(String username,Long userId) {
 
-        Map<String,Object> calims=new HashMap<>();
-
+        Map<String,Object> claims=new HashMap<>();
+        claims.put("userId",userId);
         return Jwts.builder()
-                .claims()
-                .add(calims)
+                .claims(claims)
+
                 .subject(username)
                 .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis()+60*60*30))
-                .and()
+                .expiration(new Date(System.currentTimeMillis()+60*60*1000))
+
                 .signWith(getKey())
                 .compact()
                 ;
@@ -75,6 +75,13 @@ public class JWTServiceImpl implements JWTService {
         // extract the username from jwt token
         return extractClaim(token, Claims::getSubject);
     }
+//function to extract the userID from token
+    public Long extractUserId(String token) {
+        return extractClaim(token, claims -> claims.get("userId", Long.class));
+    }
+
+
+
 
     private <T> T extractClaim(String token, Function<Claims, T> claimResolver) {
         final Claims claims = extractAllClaims(token);

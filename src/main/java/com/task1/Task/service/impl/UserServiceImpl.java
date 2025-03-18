@@ -1,6 +1,7 @@
 package com.task1.Task.service.impl;
 
 import com.task1.Task.config.ModelMapperConfig;
+import com.task1.Task.dto.AuthResponse;
 import com.task1.Task.dto.Userdto;
 import com.task1.Task.entity.Profile;
 import com.task1.Task.entity.User;
@@ -20,6 +21,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -60,20 +62,48 @@ public class UserServiceImpl implements UserService {
 
     }
 
+
     @Override
-    public String verify(Userdto userdto) {
-        User user= modelMapper.map(userdto,User.class);
+    public AuthResponse verify(Userdto userdto) {
+        User user = modelMapper.map(userdto, User.class);
 
-        Authentication authentication=
-                authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getName(),user.getPassword()));
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(user.getName(), user.getPassword())
+        );
 
-        if(authentication.isAuthenticated()){
-            return jwtService.generateToken(user.getName());
+        if (authentication.isAuthenticated()) {
+            // Get full user details to fetch the ID
+            User authenticatedUser = userRepository.findByName(user.getName());
+//            User authenticatedUser = userRepository.findByName(user.getName())
+//                    .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
+            String token = jwtService.generateToken(user.getName(), user.getId());
+            Long userId = authenticatedUser.getId();
+
+            return new AuthResponse(token, userId);
         }
 
-
-        return "fail";
+        throw new RuntimeException("Authentication failed");
     }
+
+
+
+
+
+//    @Override
+//    public String verify(Userdto userdto) {
+//        User user= modelMapper.map(userdto,User.class);
+//
+//        Authentication authentication=
+//                authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getName(),user.getPassword()));
+//
+//        if(authentication.isAuthenticated()){
+//            return jwtService.generateToken(user.getName());
+//        }
+//
+//
+//        return "fail";
+//    }
 
     @Override
     public Userdto getUserById(Long id) {
@@ -81,19 +111,43 @@ public class UserServiceImpl implements UserService {
         return modelMapper.map(user,Userdto.class);
     }
 
-    @Override
-    public Userdto updateUserById(Long id, Userdto userdto) {
 
-        User user=userRepository.findById(id).orElseThrow( ()->new RuntimeException("No User found for the Id:"+id) );
-        User updatedUser=modelMapper.map(userdto,User.class);
-        updatedUser.setPassword(encoder.encode(user.getPassword()));
-        updatedUser.setId(id);
-        updatedUser.setDate(user.getDate());
+//    for angular
+@Override
+public Userdto updateUserById(Long id, Userdto userdto) {
+    User user = userRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("No User found for the Id:" + id));
 
-        userRepository.save(updatedUser);
-        return modelMapper.map(updatedUser,Userdto.class);
+    // Map updated fields
+    user.setName(userdto.getName());
+    user.setEmail(userdto.getEmail());
+    user.setContactNo(userdto.getContactNo());
+    user.setPassword(encoder.encode(user.getPassword())); // Encode password
+    user.setDate(user.getDate());
 
-    }
+    User updatedUser = userRepository.save(user);
+    return modelMapper.map(updatedUser, Userdto.class);
+}
+
+
+
+
+
+
+//    old
+//    @Override
+//    public Userdto updateUserById(Long id, Userdto userdto) {
+//
+//        User user=userRepository.findById(id).orElseThrow( ()->new RuntimeException("No User found for the Id:"+id) );
+//        User updatedUser=modelMapper.map(userdto,User.class);
+//        updatedUser.setPassword(encoder.encode(user.getPassword()));
+//        updatedUser.setId(id);
+//        updatedUser.setDate(user.getDate());
+//
+//        userRepository.save(updatedUser);
+//        return modelMapper.map(updatedUser,Userdto.class);
+//
+//    }
 
     @Override
     public Page<User> getAllUsers(int pageNumber, int pageSize, String sortBy, boolean sortOrder) {
