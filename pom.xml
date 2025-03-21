@@ -100,6 +100,7 @@
 
 
 
+<!--		Keycloak Dependency-->
 
 		<dependency>
 			<groupId>org.keycloak</groupId>
@@ -110,6 +111,15 @@
 			<groupId>org.keycloak</groupId>
 			<artifactId>keycloak-admin-client</artifactId>
 			<version>20.0.0</version>
+		</dependency>
+
+
+<!--		Liquibase Dependency-->
+
+		<dependency>
+			<groupId>org.liquibase</groupId>
+			<artifactId>liquibase-core</artifactId>
+			<version>4.29.2</version>
 		</dependency>
 
 

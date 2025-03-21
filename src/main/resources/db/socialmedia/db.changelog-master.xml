@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+
+    <!-- creating the users table -->
+    <include file="db/socialmedia/changelog-210320251217.xml"/>
+
+<!--    Creating profile-->
+    <include file="db/socialmedia/changelog-210320251222.xml"/>
+
+<!--    Creating post-->
+    <include file="db/socialmedia/changelog-210320251223.xml"/>
+
+<!--    Uploading data from the users CSV-->
+    <include file="db/socialmedia/changelog-210320251244.xml"/>
+
+    <!--    Uploading data from the profile CSV-->
+    <include file="db/socialmedia/changelog-210320251258.xml"/>
+
+    <!--    Uploading data from the profilenew CSV-->
+    <include file="db/socialmedia/changelog-210320250323.xml"/>
+
+    <!--    Uploading data from the post CSV-->
+    <include file="db/socialmedia/changelog-210320251259.xml"/>
+
+
+
+<!--Inserting data in profile-->
+    <include file="db/socialmedia/changelog-210320250229.xml"/>
+
+
+
+<!--    Creating new table using preconditons-->
+    <include file="db/socialmedia/changelog-210320250424.xml"/>
+</databaseChangeLog>

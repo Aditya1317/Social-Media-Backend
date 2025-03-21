@@ -44,9 +44,9 @@ public class KeycloakAdminService
                 .grantType(OAuth2Constants.PASSWORD)
                 .build();
 
-        createRealm("Testing");
+//        createRealm("Testing");
         // Automatically create a test user
-        createUser("Testing", "adi", "adi@avaali.com", "adi");
+//        createUser("Testing", "adi", "adi@avaali.com", "adi");
     }
 
     public void createRealm(String realmName) {

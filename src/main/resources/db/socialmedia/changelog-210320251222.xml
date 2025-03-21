@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="210320251222-1" author="aditya">
+        <createTable tableName="profile">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="followers" type="BIGINT"/>
+            <column name="following" type="BIGINT"/>
+            <column name="no_of_posts" type="BIGINT"/>
+            <column name="bio" type="TEXT"/>
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="fk_profile_user" references="users(id)" unique="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="210320251222-2" author="aditya">
+        <modifyDataType tableName="profile" columnName="bio" newDataType="VARCHAR(255)"/>
+    </changeSet>
+
+    <changeSet id="210320251222-3" author="aditya">
+        <update tableName="profile">
+            <column name="bio" value="Updated bio"/>
+            <where>id = 3</where>
+        </update>
+    </changeSet>
+
+
+    <changeSet id="210320251222-4" author="aditya">
+        <addColumn tableName="profile">
+            <column name="dob" type="VARCHAR(255)">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="210320251222-5" author="aditya">
+        <update tableName="profile">
+            <column name="dob" value="20-05-2111"/>
+            <where>id=1</where>
+        </update>
+        <update tableName="profile">
+            <column name="dob" value="20-05-2111"/>
+            <where>id=2</where>
+        </update>
+        <update tableName="profile">
+            <column name="dob" value="20-05-2111"/>
+            <where>id=3</where>
+        </update>
+
+    </changeSet>
+
+    <changeSet id="210320251222-6" author="aditya">
+
+        <update tableName="profile">
+            <column name="dob" value="20-05-2111"/>
+            <where>id=7</where>
+        </update>
+
+    </changeSet>
+
+
+
+</databaseChangeLog>

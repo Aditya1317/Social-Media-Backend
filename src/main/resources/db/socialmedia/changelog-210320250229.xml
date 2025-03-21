@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="4561" author="aditya">
+        <insert tableName="profile">
+            <column name="followers" value="300"/>
+            <column name="following" value="150"/>
+            <column name="no_of_posts" value="20"/>
+            <column name="bio" value="Full Stack Developer"/>
+            <column name="user_id" value="1"/>
+        </insert>
+    </changeSet>
+
+
+</databaseChangeLog>
