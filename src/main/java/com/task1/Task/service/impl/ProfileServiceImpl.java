@@ -1,7 +1,9 @@
 package com.task1.Task.service.impl;
 
 import com.task1.Task.dto.Profiledto;
+import com.task1.Task.entity.FollowerRequest;
 import com.task1.Task.entity.Profile;
+import com.task1.Task.repository.FollowerRequestRepository;
 import com.task1.Task.repository.ProfileRepository;
 import com.task1.Task.service.ProfileService;
 import lombok.AllArgsConstructor;
@@ -19,6 +21,8 @@ public class ProfileServiceImpl implements ProfileService {
     @Autowired
     ProfileRepository profileRepository;
 
+    @Autowired
+    FollowerRequestRepository followerRequestRepository;
 
     @Override
     public Profiledto insertProfileDetails(Long id, Profiledto profiledto) {
@@ -80,6 +84,15 @@ public class ProfileServiceImpl implements ProfileService {
         // Save the updates to both profiles
         profileRepository.save(followerProfile);
         profileRepository.save(followedProfile);
+
+
+        //follwerRequest changes
+        FollowerRequest followerRequest = new FollowerRequest();
+        followerRequest.setRequest_to_user_id(profileId);
+        followerRequest.setRequest_by_user_id(loggedInUserId);
+        followerRequest.setStatus("PENDING");
+
+        followerRequestRepository.save(followerRequest);
 
         // Return the followed user's updated profile as DTO
         return modelMapper.map(followedProfile, Profiledto.class);
