@@ -15,8 +15,9 @@ import java.time.LocalDateTime;
 public class FollowerRequestDto {
 
     private Long id;
-    private Long request_to_user_id;
-    private Long request_by_user_id;
+
+    private Long requestToUserId;
+    private Long requestByUserId;
     private String status;
-    private LocalDateTime request_date;
+    private LocalDateTime requestDate;
 }
