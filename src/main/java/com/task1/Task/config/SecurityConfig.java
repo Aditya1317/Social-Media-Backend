@@ -4,6 +4,7 @@ import com.task1.Task.filter.JwtFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -32,24 +33,39 @@ public class SecurityConfig {
     private JwtFilter jwtFilter;
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity security) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+                .csrf().disable() // Disable CSRF for APIs
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .authorizeRequests()
+                .antMatchers(HttpMethod.OPTIONS).permitAll()
+                .antMatchers("/api/user/create","/api/user/login").permitAll()
+                .antMatchers("/api/**").authenticated()
+                .anyRequest().permitAll();
 
-        return security
-                .cors(Customizer.withDefaults())
-                .csrf(customizer->customizer.disable())
-                .authorizeHttpRequests(request->
-                        request
-                                .requestMatchers("/api/user/create","/api/user/login")
-                                .permitAll()
-                                .anyRequest().authenticated())
-                .formLogin(Customizer.withDefaults())
-                .httpBasic(Customizer.withDefaults())
-                .sessionManagement(session->
-                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
-                .build();
-
+        return http.build();
     }
+
+//    @Bean
+//    public SecurityFilterChain securityFilterChain(HttpSecurity security) throws Exception {
+//
+//        return security
+//                .cors(Customizer.withDefaults())
+//                .csrf(customizer->customizer.disable())
+//                .authorizeHttpRequests(request->
+//                        request
+//                                .requestMatchers("/api/user/create","/api/user/login")
+//                                .permitAll()
+//                                .anyRequest().authenticated())
+//                .formLogin(Customizer.withDefaults())
+//                .httpBasic(Customizer.withDefaults())
+//                .sessionManagement(session->
+//                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+//                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+//                .build();
+//
+//    }
 
 
     @Bean

@@ -6,7 +6,7 @@ import com.task1.Task.entity.FollowerRequest;
 import com.task1.Task.entity.Profile;
 import com.task1.Task.service.JWTService;
 import com.task1.Task.service.ProfileService;
-import jakarta.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

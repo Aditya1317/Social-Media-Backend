@@ -2,8 +2,10 @@ package com.task1.Task.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
+import javax.persistence.*;
 import lombok.*;
+
+import javax.persistence.Entity;
 
 @Getter
 @Setter

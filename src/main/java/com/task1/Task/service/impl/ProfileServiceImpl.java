@@ -67,8 +67,8 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
 //    New----------------------------------
-@Override
-public Profiledto followAnotherId(Long profileId, Long loggedInUserId) {
+    @Override
+    public Profiledto followAnotherId(Long profileId, Long loggedInUserId) {
 
     if (Objects.equals(profileId, loggedInUserId)) {
         throw new ResourceNotFoundException("You cannot send a follow request to yourself");
