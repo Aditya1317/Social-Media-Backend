@@ -130,7 +130,32 @@
 
 
 
+
 	</dependencies>
+	<repositories>
+		<repository>
+			<id>demoproject.app</id>
+			<url>https://pkgs.dev.azure.com/adityakukade8/demoproject/_packaging/demoproject.app/maven/v1</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
+	<distributionManagement>
+		<repository>
+			<id>demoproject.app</id>
+			<url>https://pkgs.dev.azure.com/adityakukade8/demoproject/_packaging/demoproject.app/maven/v1</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+	</distributionManagement>
 
 	<build>
 		<plugins>
